@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff758c"/>
+      <stop offset="50%" stop-color="#ff7eb3"/>
+      <stop offset="100%" stop-color="#7028e4"/>
+    </linearGradient>
+    <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe600"/>
+      <stop offset="100%" stop-color="#ffaa00"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <!-- Background with rounded squircles -->
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)"/>
+  
+  <!-- Safe zone elements -->
+  <g filter="url(#shadow)">
+    <!-- Central Magic Wand & Star -->
+    <path d="M256 80 L290 190 L405 190 L312 260 L348 370 L256 300 L164 370 L200 260 L107 190 L222 190 Z" fill="url(#starGrad)"/>
+    <!-- Cute Smiley in Star -->
+    <circle cx="225" cy="225" r="14" fill="#6d28d9"/>
+    <circle cx="287" cy="225" r="14" fill="#6d28d9"/>
+    <path d="M230 255 Q256 280 282 255" fill="none" stroke="#6d28d9" stroke-width="8" stroke-linecap="round"/>
+    <ellipse cx="205" cy="245" rx="10" ry="6" fill="#f43f5e" opacity="0.6"/>
+    <ellipse cx="307" cy="245" rx="10" ry="6" fill="#f43f5e" opacity="0.6"/>
+    
+    <!-- Sparkles -->
+    <circle cx="120" cy="120" r="16" fill="#ffffff" opacity="0.9"/>
+    <circle cx="390" cy="110" r="20" fill="#ffffff" opacity="0.9"/>
+    <circle cx="390" cy="380" r="14" fill="#ffffff" opacity="0.9"/>
+    <circle cx="120" cy="390" r="18" fill="#ffffff" opacity="0.9"/>
+  </g>
+  <!-- Lock badge denoting parent security -->
+  <circle cx="256" cy="430" r="32" fill="#ffffff" opacity="0.95"/>
+  <path d="M246 422 V416 A10 10 0 0 1 266 416 V422 M242 422 H270 V442 H242 Z" fill="none" stroke="#6d28d9" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,82 @@
+{
+  "id": "/",
+  "name": "KidLauncher Seguro - Launcher Infantil",
+  "short_name": "KidLauncher",
+  "description": "Launcher simple, divertido y seguro para niñas en Android 11 con bloqueo de aplicaciones por contraseña y control parental.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#ec4899",
+  "background_color": "#fdf2f8",
+  "lang": "es",
+  "dir": "ltr",
+  "categories": [
+    "personalization",
+    "kids",
+    "education",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "KidLauncher Seguro para Android 11"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "KidLauncher Seguro para Android 11"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Pizarra Mágica",
+      "short_name": "Dibujar",
+      "description": "Abrir pizarra de dibujo para niños",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/pwa-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Música Mágica",
+      "short_name": "Música",
+      "description": "Abrir piano y sonidos divertidos",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/pwa-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

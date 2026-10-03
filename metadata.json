@@ -1,0 +1,6 @@
+{
+  "name": "KidLauncher Seguro - Launcher Infantil con Bloqueo de Apps",
+  "description": "Launcher simple, divertido y seguro para niñas en Android 11. Oculta y bloquea aplicaciones con contraseña PIN, modo seguro y control parental.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
