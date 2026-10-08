@@ -11,7 +11,7 @@ export interface AppItem {
   isHidden: boolean; // True = hidden from kid launcher
   isLockedWithPin: boolean; // True = requires parent PIN to open
   isSystem?: boolean;
-  internalAppId?: 'paint' | 'music' | 'camera' | 'stories' | 'calc' | 'games' | 'routine' | 'diary' | 'contacts' | 'gallery';
+  internalAppId?: 'paint' | 'music' | 'camera' | 'stories' | 'calc' | 'games' | 'routine' | 'diary' | 'contacts' | 'gallery' | 'pet' | 'stickers' | 'walkie' | 'dj';
   url?: string; // For web apps / YouTube Kids / etc.
   phone?: string; // For call shortcuts
   customBadge?: string;

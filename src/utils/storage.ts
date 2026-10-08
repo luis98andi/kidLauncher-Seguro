@@ -169,30 +169,60 @@ export const INITIAL_APPS: AppItem[] = [
     order: 9,
   },
   {
-    id: 'app-yt-kids',
-    name: 'YouTube Kids',
+    id: 'app-pet',
+    name: 'Mascota Mágica',
     iconType: 'emoji',
-    iconValue: '▶️',
-    color: 'from-red-500 via-rose-500 to-orange-500',
+    iconValue: '🐱',
+    color: 'from-amber-300 via-pink-400 to-rose-400',
     category: 'divertido',
     isHidden: false,
-    isLockedWithPin: false, // Parents can lock this if desired!
-    url: 'https://www.youtubekids.com',
-    customBadge: 'VIDEOS',
+    isLockedWithPin: false,
+    isSystem: true,
+    internalAppId: 'pet',
+    customBadge: 'CUIDAR',
     order: 10,
   },
   {
-    id: 'app-khan-kids',
-    name: 'Aprender Jugando',
+    id: 'app-stickers',
+    name: 'Álbum Stickers',
     iconType: 'emoji',
-    iconValue: '🦉',
-    color: 'from-green-500 via-emerald-500 to-teal-500',
-    category: 'educativo',
+    iconValue: '🦄',
+    color: 'from-fuchsia-400 via-purple-400 to-pink-500',
+    category: 'creativo',
     isHidden: false,
     isLockedWithPin: false,
-    url: 'https://learn.khanacademy.org/khan-academy-kids/',
-    customBadge: 'CLASES',
+    isSystem: true,
+    internalAppId: 'stickers',
+    customBadge: 'PEGATINAS',
     order: 11,
+  },
+  {
+    id: 'app-walkie',
+    name: 'Voces Mágicas',
+    iconType: 'emoji',
+    iconValue: '🎙️',
+    color: 'from-cyan-400 via-teal-400 to-emerald-500',
+    category: 'divertido',
+    isHidden: false,
+    isLockedWithPin: false,
+    isSystem: true,
+    internalAppId: 'walkie',
+    customBadge: 'GRABAR',
+    order: 12,
+  },
+  {
+    id: 'app-dj',
+    name: 'DJ y Ritmos',
+    iconType: 'emoji',
+    iconValue: '🎧',
+    color: 'from-violet-500 via-purple-500 to-pink-500',
+    category: 'divertido',
+    isHidden: false,
+    isLockedWithPin: false,
+    isSystem: true,
+    internalAppId: 'dj',
+    customBadge: 'MÚSICA',
+    order: 13,
   },
   {
     id: 'app-system-settings',
@@ -205,7 +235,7 @@ export const INITIAL_APPS: AppItem[] = [
     isLockedWithPin: true,
     isSystem: true,
     customBadge: 'SOLO PADRES',
-    order: 12,
+    order: 14,
   },
   {
     id: 'app-play-store',
@@ -218,7 +248,7 @@ export const INITIAL_APPS: AppItem[] = [
     isLockedWithPin: true,
     url: 'https://play.google.com/store',
     customBadge: 'TIENDA',
-    order: 13,
+    order: 15,
   },
   {
     id: 'app-browser',
@@ -230,7 +260,7 @@ export const INITIAL_APPS: AppItem[] = [
     isHidden: true, // Hidden by default for child protection!
     isLockedWithPin: true,
     customBadge: 'RESTRINGIDO',
-    order: 14,
+    order: 16,
   }
 ];
 
@@ -264,7 +294,21 @@ export function loadApps(): AppItem[] {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+        // Filter out YouTube Kids and Aprender Jugando
+        let sanitized = parsed.filter(
+          (a: AppItem) => a.id !== 'app-yt-kids' && a.id !== 'app-khan-kids' && !a.url?.includes('youtubekids') && !a.url?.includes('khanacademy')
+        );
+
+        // Ensure new creative apps are present
+        const existingIds = new Set(sanitized.map((a: AppItem) => a.id));
+        INITIAL_APPS.forEach((initApp) => {
+          if (!existingIds.has(initApp.id) && initApp.internalAppId) {
+            sanitized.push(initApp);
+          }
+        });
+
+        saveApps(sanitized);
+        return sanitized;
       }
     }
   } catch {

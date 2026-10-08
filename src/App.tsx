@@ -27,6 +27,10 @@ import { KidCalculatorApp } from './components/apps/KidCalculatorApp';
 import { KidContactsApp } from './components/apps/KidContactsApp';
 import { KidRoutineApp } from './components/apps/KidRoutineApp';
 import { KidDiaryApp } from './components/apps/KidDiaryApp';
+import { KidPetApp } from './components/apps/KidPetApp';
+import { KidStickersApp } from './components/apps/KidStickersApp';
+import { KidWalkieApp } from './components/apps/KidWalkieApp';
+import { KidDjApp } from './components/apps/KidDjApp';
 import confetti from 'canvas-confetti';
 
 export default function App() {
@@ -34,6 +38,7 @@ export default function App() {
   const [settings, setSettings] = useState<ParentSettings>(loadSettings);
   const [timeStr, setTimeStr] = useState('');
   const [dateStr, setDateStr] = useState('');
+  const [bgSparkles, setBgSparkles] = useState<{ id: number; x: number; y: number }[]>([]);
 
   // Modals & Navigation
   const [showPinModal, setShowPinModal] = useState(false);
@@ -113,8 +118,8 @@ export default function App() {
       return;
     }
 
-    if (app.phone) {
-      window.location.href = `tel:${app.phone}`;
+    if (app.phone || app.id === 'app-contacts') {
+      setActiveMiniApp('contacts');
       return;
     }
 
@@ -156,43 +161,43 @@ export default function App() {
     }
   };
 
-  // Icon Size Grid Map
+  // Icon Size Grid Map (Optimized for 1024x768 and modern responsive screens)
   const getGridClass = (size: ParentSettings['iconSize']) => {
     switch (size) {
       case 'normal':
-        return 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3';
+        return 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-2.5';
       case 'large':
-        return 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4';
+        return 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2.5 sm:gap-3';
       case 'xlarge':
-        return 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-5';
+        return 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-3.5';
       default:
-        return 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4';
+        return 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2.5 sm:gap-3';
     }
   };
 
   const getTileSizeClass = (size: ParentSettings['iconSize']) => {
     switch (size) {
       case 'normal':
-        return 'p-3 rounded-2xl min-h-[110px]';
+        return 'p-2 sm:p-2.5 rounded-2xl min-h-[85px] sm:min-h-[95px]';
       case 'large':
-        return 'p-4 sm:p-5 rounded-3xl min-h-[135px]';
+        return 'p-2.5 sm:p-3 rounded-2xl min-h-[95px] sm:min-h-[110px]';
       case 'xlarge':
-        return 'p-5 sm:p-6 rounded-3xl min-h-[160px]';
+        return 'p-3 sm:p-4 rounded-3xl min-h-[115px] sm:min-h-[130px]';
       default:
-        return 'p-4 sm:p-5 rounded-3xl min-h-[135px]';
+        return 'p-2.5 sm:p-3 rounded-2xl min-h-[95px] sm:min-h-[110px]';
     }
   };
 
   const getIconSizeClass = (size: ParentSettings['iconSize']) => {
     switch (size) {
       case 'normal':
-        return 'text-3xl w-12 h-12';
+        return 'text-2xl sm:text-3xl w-10 h-10 sm:w-11 sm:h-11';
       case 'large':
-        return 'text-4xl w-14 h-14';
+        return 'text-3xl sm:text-4xl w-11 h-11 sm:w-13 sm:h-13';
       case 'xlarge':
-        return 'text-5xl w-18 h-18';
+        return 'text-4xl sm:text-5xl w-13 h-13 sm:w-16 sm:h-16';
       default:
-        return 'text-4xl w-14 h-14';
+        return 'text-3xl sm:text-4xl w-11 h-11 sm:w-13 sm:h-13';
     }
   };
 
@@ -213,8 +218,39 @@ export default function App() {
     );
   }
 
+  const handleWallpaperClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('button, input, select, textarea, a, video')) return;
+
+    const newSparkle = {
+      id: Date.now() + Math.random(),
+      x: e.clientX,
+      y: e.clientY,
+    };
+    setBgSparkles((prev) => [...prev.slice(-6), newSparkle]);
+    playSparkleSound(settings.soundEnabled);
+
+    setTimeout(() => {
+      setBgSparkles((prev) => prev.filter((s) => s.id !== newSparkle.id));
+    }, 700);
+  };
+
   return (
-    <div className={`fixed inset-0 select-none overflow-hidden flex flex-col ${getThemeClass(settings.theme)} transition-colors duration-500`}>
+    <div 
+      onClick={handleWallpaperClick}
+      className={`fixed inset-0 select-none overflow-hidden flex flex-col ${getThemeClass(settings.theme)} transition-colors duration-500`}
+    >
+      {/* Interactive Wallpaper Sparkles */}
+      {bgSparkles.map((s) => (
+        <span
+          key={s.id}
+          style={{ left: s.x, top: s.y }}
+          className="fixed pointer-events-none text-3xl animate-ping -translate-x-1/2 -translate-y-1/2 z-30 select-none"
+        >
+          ✨
+        </span>
+      ))}
+
       {/* Sparkle decorative background elements */}
       <div className="absolute top-10 left-5 text-2xl opacity-40 animate-float pointer-events-none">✨</div>
       <div className="absolute top-40 right-6 text-3xl opacity-30 animate-pulse-gentle pointer-events-none">🦄</div>
@@ -255,28 +291,28 @@ export default function App() {
       </header>
 
       {/* Main Launcher Home Content */}
-      <main className="flex-1 overflow-y-auto px-4 py-3 flex flex-col max-w-4xl mx-auto w-full z-10">
-        {/* Kid Greeting & Clock Widget */}
-        <section className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-3xl bg-white/70 backdrop-blur-md shadow-lg border-2 border-white/80 mb-4 transition">
-          <div className="flex items-center gap-3.5">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-pink-400 to-rose-400 flex items-center justify-center text-3xl shadow-md animate-bounce">
+      <main className="flex-1 overflow-y-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-col max-w-5xl mx-auto w-full z-10">
+        {/* Kid Greeting & Clock Widget (Compact for 1024x768) */}
+        <section className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 p-3 sm:p-3.5 rounded-2xl bg-white/75 backdrop-blur-md shadow-md border-2 border-white/80 mb-2.5 transition">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-pink-400 to-rose-400 flex items-center justify-center text-2xl sm:text-3xl shadow-md animate-bounce shrink-0">
               {settings.avatarEmoji || '👑'}
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-800">
+                <h1 className="text-lg sm:text-xl font-black tracking-tight text-slate-800">
                   ¡Hola, {settings.kidName}!
                 </h1>
-                <Sparkles className="w-5 h-5 text-amber-500 animate-sparkle" />
+                <Sparkles className="w-4 h-4 text-amber-500 animate-sparkle" />
               </div>
-              <p className="text-xs text-slate-500 font-bold capitalize">
+              <p className="text-[11px] text-slate-500 font-bold capitalize">
                 {dateStr}
               </p>
             </div>
           </div>
 
           {/* Quick Mood Pill */}
-          <div className="flex items-center gap-1.5 bg-pink-50/80 p-1.5 rounded-2xl border border-pink-200">
+          <div className="flex items-center gap-1 bg-pink-50/80 p-1 rounded-xl border border-pink-200">
             {['👑 Feliz', '🦄 Mágica', '⭐ Genial', '🎨 Creativa'].map((m) => (
               <button
                 key={m}
@@ -285,7 +321,7 @@ export default function App() {
                   playSparkleSound(settings.soundEnabled);
                   confetti({ particleCount: 30, spread: 50, origin: { y: 0.3 } });
                 }}
-                className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition ${
+                className={`px-2 py-0.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition ${
                   selectedDailyMood === m
                     ? 'bg-pink-500 text-white shadow-sm scale-105'
                     : 'text-pink-700 hover:bg-pink-100'
@@ -296,26 +332,6 @@ export default function App() {
             ))}
           </div>
         </section>
-
-        {/* Quick Family Direct Dial Bar (If any contacts) */}
-        {settings.emergencyContacts.length > 0 && (
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 mb-2 scrollbar-none">
-            <span className="text-xs font-black text-slate-600 pl-1 flex-shrink-0">Llamar rápido:</span>
-            {settings.emergencyContacts.map((contact) => (
-              <button
-                key={contact.id}
-                onClick={() => {
-                  playSparkleSound(settings.soundEnabled);
-                  window.location.href = `tel:${contact.phone}`;
-                }}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white/80 hover:bg-white border border-white shadow-sm flex-shrink-0 active:scale-95 transition"
-              >
-                <span className="text-xl">{contact.avatarEmoji}</span>
-                <span className="text-xs font-black text-slate-800">{contact.name}</span>
-              </button>
-            ))}
-          </div>
-        )}
 
         {/* App Grid */}
         <div className={`grid ${getGridClass(settings.iconSize)} w-full pb-6`}>
@@ -368,15 +384,17 @@ export default function App() {
           }}
           className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-400 text-white font-black text-xs shadow-lg active:scale-95 transition"
         >
-          <span>🎨 Pizarra de Dibujo Rápida</span>
+          <span>🎨 Pizarra de Dibujo</span>
         </button>
 
         <button
-          onClick={() => setShowApkGuide(true)}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-white/80 hover:bg-white text-emerald-800 font-black text-xs shadow border border-emerald-200 active:scale-95 transition"
+          onClick={() => {
+            setActiveMiniApp('pet');
+            playSparkleSound(settings.soundEnabled);
+          }}
+          className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-gradient-to-r from-purple-500 via-pink-500 to-rose-400 text-white font-black text-xs shadow-md active:scale-95 transition"
         >
-          <Smartphone className="w-4 h-4 text-emerald-600" />
-          <span>Guía Android 11 / APK</span>
+          <span>🐾 Mi Mascota Mágica</span>
         </button>
       </footer>
 
@@ -491,6 +509,34 @@ export default function App() {
 
       {activeMiniApp === 'diary' && (
         <KidDiaryApp
+          onClose={() => setActiveMiniApp(null)}
+          soundEnabled={settings.soundEnabled}
+        />
+      )}
+
+      {activeMiniApp === 'pet' && (
+        <KidPetApp
+          onClose={() => setActiveMiniApp(null)}
+          soundEnabled={settings.soundEnabled}
+        />
+      )}
+
+      {activeMiniApp === 'stickers' && (
+        <KidStickersApp
+          onClose={() => setActiveMiniApp(null)}
+          soundEnabled={settings.soundEnabled}
+        />
+      )}
+
+      {activeMiniApp === 'walkie' && (
+        <KidWalkieApp
+          onClose={() => setActiveMiniApp(null)}
+          soundEnabled={settings.soundEnabled}
+        />
+      )}
+
+      {activeMiniApp === 'dj' && (
+        <KidDjApp
           onClose={() => setActiveMiniApp(null)}
           soundEnabled={settings.soundEnabled}
         />
