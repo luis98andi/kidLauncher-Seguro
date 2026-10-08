@@ -266,9 +266,6 @@ export default function App() {
         </div>
 
         <div className="flex items-center gap-3">
-          {/* PWA In-App Install prompt */}
-          <PWAInstallButton onOpenApkGuide={() => setShowApkGuide(true)} />
-
           <div className="flex items-center gap-1.5 opacity-80 text-xs font-bold">
             <Wifi className="w-3.5 h-3.5" />
             <Battery className="w-4 h-4" />

@@ -44,17 +44,6 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({ onOpenApkGui
             <span>Instalar en Pantalla</span>
           </button>
         )}
-
-        {/* APK / Android 11 Info Guide Button */}
-        {onOpenApkGuide && (
-          <button
-            onClick={onOpenApkGuide}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 hover:bg-white text-purple-700 font-black text-xs shadow-sm border border-purple-200 transition active:scale-95"
-          >
-            <Smartphone className="w-3.5 h-3.5 text-purple-600" />
-            <span>Guía APK / Android 11</span>
-          </button>
-        )}
       </div>
 
       {/* iOS Modal */}
